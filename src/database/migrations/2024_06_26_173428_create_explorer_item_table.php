@@ -9,9 +9,10 @@ class CreateExplorerItemTable extends Migration
     public function up()
     {
         Schema::create('explorer_item', function (Blueprint $table) {
+            $table->string('name');
             $table->id();
-            $table->foreignId('explorer_id')->nullable()->constrained();
-            $table->foreignId('item_id')->constrained();
+            $table->foreignId('explorer_id')->constrained('explorer');
+            $table->foreignId('item_id')->constrained('item');
             $table->timestamps();
         });
     }

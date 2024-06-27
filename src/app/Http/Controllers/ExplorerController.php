@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Explorer;
+use App\Models\ExplorerItem;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
@@ -32,33 +33,25 @@ class ExplorerController extends Controller
         return $explorer->load('items');
     }
 
-    public function updateLocation(Request $request, Explorer $explorer)
+    public function updateLocation(Request $request, Explorer $explorer, $id)
     {
         $data = $request->validate([
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric'
         ]);
 
+        $explorer = Explorer::findOrFail($id);
         $explorer->update($data);
+
 
         return response()->json($explorer, 200);
     }
 
-    public function addItem(Request $request, Explorer $explorer)
+    public function addItem(Request $request)
     {
-        $data = $request->validate([
-            'name' => 'required|string',
-            'value' => 'required|integer',
-            'latitude' => 'required|numeric',
-            'longitude' => 'required|numeric'
-        ]);
-    
-        $item = Item::create($data);
-    
+        $inventory = ExplorerItem::create($request->all());
+            return response()->json($inventory, 201);
 
-        $explorer->items()->attach($item->id);
-    
-        return response()->json($item, 201);
     }
     
     
@@ -84,7 +77,7 @@ class ExplorerController extends Controller
         $value2 = $items2->sum('value');
 
         if ($value1 != $value2) {
-            return response()->json(['error' => 'Trade must be of equal value'], 400);
+            return response()->json(['error' => 'precisa do mesmo valor, piazão'], 400);
         }
 
         $explorer1->items()->detach($data['items1']);
@@ -93,6 +86,6 @@ class ExplorerController extends Controller
         $explorer1->items()->attach($data['items2']);
         $explorer2->items()->attach($data['items1']);
 
-        return response()->json(['message' => 'Items traded successfully'], 200);
+        return response()->json(['message' => 'barganha deu boa Pia'], 200);
     }
 }
