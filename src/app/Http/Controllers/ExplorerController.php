@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Explorer;
 use App\Models\ExplorerItem;
-use App\Models\ExplorerLocationHistory;
 use App\Models\Item;
 use Illuminate\Http\Request;
 
@@ -49,18 +48,7 @@ class ExplorerController extends Controller
     public function addItem(Request $request)
     {
         $inventory = ExplorerItem::create($request->all());
-            return response()->json($inventory, 201);
-    }
-
-    public function locationHistory($id)
-    {
-
-        $explorer = Explorer::findOrFail($id);
-        $historico = ExplorerLocationHistory::where('explorer_id', $explorer->id)
-                                            ->orderBy('created_at', 'desc')
-                                            ->get(['id', 'explorer_id', 'latitude', 'longitude', 'created_at', 'updated_at']);
-
-        return response()->json($historico, 200);
+        return response()->json($inventory, 201);
     }
 
     public function tradeItems(Request $request)

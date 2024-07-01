@@ -8,4 +8,3 @@ Route::put('explorers/{id}/location', [ExplorerController::class, 'updateLocatio
 Route::post('explorers/{id}/items', [ExplorerController::class, 'addItem']);
 Route::post('/items', [ItemController::class, 'store']);
 Route::post('explorers/trade', [ExplorerController::class, 'tradeItems']);
-Route::get('/explorers/{id}/history', [ExplorerController::class, 'locationHistory']);
